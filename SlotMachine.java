@@ -49,6 +49,7 @@ public class SlotMachine {
             if(!response.equals("Y")){
                 break;
             }
+            scanner.close();
 
         }
         //variable declaration
