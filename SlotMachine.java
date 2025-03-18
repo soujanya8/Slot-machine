@@ -26,17 +26,23 @@ public class SlotMachine {
             else if(bet < 0){
                 System.out.println("Bet can't be less than 0");
             }
-            else {
-                balance -= bet;
-                // System.out.println(balance);
-            }
-
 
             System.out.println("Spinning.....");
             row = spinRow();
             printRow(row);
-            getPayout(row,bet);
-
+            payout = getPayout(row,bet);
+            if(payout > 0){
+                balance += payout;
+                System.out.println("*********** You Won!!! **********");
+                System.out.println("Your Payout for this round: "+payout);
+                System.out.printf("\n \n Your balance after payout: %.2f \n",balance);
+            }
+            else{
+                balance -= bet;
+                System.out.println("********* You Lost :( ********");
+                System.out.println("Your Payout for this round: "+payout);
+                System.out.printf("\n \n Your balance after loosing bet: %.2f \n",balance);
+            }
 
             System.out.print("Dou you want to play again (Y/N): ");
             String response = scanner.nextLine().toUpperCase();
@@ -65,19 +71,26 @@ public class SlotMachine {
     }
 
     static double getPayout(String[] row, double bet) {
-        double payout = 0;
         if (row[0].equals(row[1]) && row[1].equals(row[2])) {
-
-            payout = bet*20;
-
+            return switch(row[0]){
+                case "🍇" -> bet*30;
+                case "🍊" -> bet*25;
+                case "🍎" -> bet*20;
+                case "🍉" -> bet*10;
+                case "🍒" -> bet*5;
+                default -> 0;
+            };
         }
-        return payout;
+        else if(row[0].equals(row[1]) || row[1].equals(row[2])){
+            return bet*3;
+        }
+        return 0;
     }
 
     static void printRow(String[] row) {
         System.out.println("****************");
         System.out.println(" "+String.join(" | ",row));
-        System.out.println("****************");
+        System.out.println("****************\n\n");
     }
 
     static String[] spinRow() {
